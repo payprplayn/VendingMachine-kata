@@ -33,5 +33,12 @@ public class VendingMachineTest {
 		vendingMachine.insert(Coin.QUARTER);
 		assertEquals("$0.25",vendingMachine.readDisplay());
 	}
+	@Test
+	public void vendingMachineAcceptsDimesAndNickels(){
+		vendingMachine.insert(Coin.DIME);
+		assertEquals("$0.10",vendingMachine.readDisplay());
+		vendingMachine.insert(Coin.NICKEL);
+		assertEquals("$0.15",vendingMachine.readDisplay());
+	}
 
 }

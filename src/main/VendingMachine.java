@@ -13,7 +13,7 @@ public class VendingMachine {
 	}
 
 	public String readDisplay() {
-		if (balance!=0) return "$"+balance*0.01;
+		if (balance!=0) return "$"+ String.format("%.2f", balance*0.01);
 		return "INSERT COIN";
 	}
 
