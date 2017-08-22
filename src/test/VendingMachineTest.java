@@ -27,5 +27,11 @@ public class VendingMachineTest {
 		assert(vendingMachine.coinReturn.contains(Coin.PENNY));
 		assertEquals(vendingMachine.readDisplay(),"INSERT COIN");
 	}
+	
+	@Test
+	public void vendingMachineAcceptsQuarters(){
+		vendingMachine.insert(Coin.QUARTER);
+		assertEquals("$0.25",vendingMachine.readDisplay());
+	}
 
 }
