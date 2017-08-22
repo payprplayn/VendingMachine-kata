@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import main.Coin;
 import main.VendingMachine;
 
 public class VendingMachineTest {
@@ -17,6 +18,13 @@ public class VendingMachineTest {
 
 	@Test
 	public void displayReadsInsertCoinWhenNoCoinsHaveBeenInserted() {
+		assertEquals(vendingMachine.readDisplay(),"INSERT COIN");
+	}
+	
+	@Test
+	public void vendingMachineRejectsPennies(){
+		vendingMachine.insert(Coin.PENNY);
+		assert(vendingMachine.coinReturn.contains(Coin.PENNY));
 		assertEquals(vendingMachine.readDisplay(),"INSERT COIN");
 	}
 
