@@ -141,6 +141,15 @@ public class VendingMachineTest {
 		vendingMachine.order(VendingMachine.Product.CANDY);
 		assertEquals(vendingMachine.readDisplay(),"THANK YOU");
 	}
+	@Test
+	public void vendingMachineDisplaysINSERTCOINAfterTHANKYOU(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.order(VendingMachine.Product.CANDY);
+		vendingMachine.readDisplay();
+		assertEquals(vendingMachine.readDisplay(),"INSERT COIN");
+	}
 
 	
 

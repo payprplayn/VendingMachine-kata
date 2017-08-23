@@ -34,6 +34,7 @@ public class VendingMachine {
 	 */
 	public String readDisplay() {
 		if(productPurchased){
+			productPurchased=false;
 			return "THANK YOU";
 		}
 		if(balance!=0) return String.format("$%.2f", balance*.01);
@@ -95,6 +96,7 @@ public class VendingMachine {
 			vendTarget.add(product);
 			depositedCoins.clear();
 			productPurchased=true;
+			balance=0;
 		}
 	}
 	/**
