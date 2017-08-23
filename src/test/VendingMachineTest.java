@@ -43,6 +43,7 @@ public class VendingMachineTest {
 	public void setUp(){
 		vendingMachine=new VendingMachine();
 		vendingMachine.setCoinReturn(new LinkedList<Coin>());
+		vendingMachine.setVendTarget(new LinkedList<VendingMachine.Product>());
 	}
 
 	@Test
@@ -101,6 +102,12 @@ public class VendingMachineTest {
 		assert vendingMachine.getCoinReturn().remove(CoinType.DIME);
 		assert vendingMachine.getCoinReturn().remove(CoinType.QUARTER);
 		assert vendingMachine.getCoinReturn().isEmpty();
+	}
+	@Test
+	public void vendingMachineSellsCola(){
+		for (int i=0; i<4; i++)vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.order(VendingMachine.Product.COLA);
+		assert vendingMachine.getVendTarget().contains(VendingMachine.Product.COLA);
 	}
 
 	

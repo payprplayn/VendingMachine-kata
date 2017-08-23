@@ -3,11 +3,28 @@ package main;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import main.VendingMachine.Product;
+
 public class VendingMachine {
 
 	private Collection<? super Coin> coinReturn;
 	private int balance;
 	private Collection<Coin> depositedCoins;
+	private Collection<? super Product> vendTarget;
+	/**
+	 * set the vend target for this vending machine.
+	 * @param vendTarget the new vend target. Any future products vended will be placed here (until a new vendTarget is set);
+	 */
+	public void setVendTarget(Collection<? super Product> vendTarget) {
+		this.vendTarget = vendTarget;
+	}
+	public enum Product{
+		COLA(1.0);
+		private double price;
+		Product(double price){
+			this.price=price;
+		}
+	}
 	public VendingMachine(){
 		balance=0;
 		depositedCoins=new LinkedList<Coin>();
@@ -65,6 +82,20 @@ public class VendingMachine {
 		balance=0;
 		coinReturn.addAll(depositedCoins);
 		depositedCoins.clear();
+	}
+	/**
+	 * Order a product.  if sufficient money has been inserted, the product will be vended and any change will be returned.
+	 * Otherwise, the price of the product will be displayed.
+	 * @param product the product to order
+	 */
+	public void order(Product product) {
+		if (balance>=product.price)vendTarget.add(product);
+	}
+	/**
+	 * @return The vend target that was previously set by setVendTarget()
+	 */
+	public Collection<? super Product > getVendTarget() {
+		return vendTarget;
 	}
 
 }
