@@ -60,6 +60,7 @@ public class VendingMachine {
 			return "SOLD OUT";
 		}
 		if(balance!=0) return String.format("$%.2f", balance*.01);
+		if(dimes.isEmpty()||nickels.isEmpty()) return "EXACT CHANGE ONLY";
 		return "INSERT COIN";
 	}
 	
@@ -178,6 +179,21 @@ public class VendingMachine {
 	public void addNickels(Collection<? extends Coin> toAdd){
 		nickels.addAll(toAdd);
 		
+	}
+	
+	/**
+	 * retrieve the coins from this Vending Machine
+	 * @return Collection containing the coins retrieved
+	 */
+	public Collection<Coin> collectCoins(){
+		Collection<Coin> change=new Stack<Coin>();
+		change.addAll(quarters);
+		change.addAll(dimes);
+		change.addAll(nickels);
+		quarters.clear();
+		dimes.clear();
+		nickels.clear();
+		return change;
 	}
 
 }

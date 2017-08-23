@@ -48,6 +48,12 @@ public class VendingMachineTest {
 		vendingMachine=new VendingMachine();
 		vendingMachine.setCoinReturn(new LinkedList<Coin>());
 		vendingMachine.setVendTarget(new LinkedList<VendingMachine.Product>());
+		Collection<Coin> input= new LinkedList<Coin>();
+		input.add(CoinType.DIME);
+		vendingMachine.addDimes(input);
+		input.clear();
+		input.add(CoinType.NICKEL);
+		vendingMachine.addNickels(input);
 	}
 	@After
 	public void cleanUp(){
@@ -201,6 +207,12 @@ public class VendingMachineTest {
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.order(VendingMachine.Product.CANDY);
 		assertEquals(25, value(vendingMachine.getCoinReturn()));
+	}
+
+	@Test
+	public void vendingMachineDisplaysEXACTCHANGEONLYwhenExactChangeIsRequired(){
+		vendingMachine.collectCoins();
+		assertEquals(vendingMachine.readDisplay(),"EXACT CHANGE ONLY");
 	}
 	private int value(Collection<? super Coin> coinReturn) {
 		int value=0;
