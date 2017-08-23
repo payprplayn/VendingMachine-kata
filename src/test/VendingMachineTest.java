@@ -109,6 +109,13 @@ public class VendingMachineTest {
 		vendingMachine.order(VendingMachine.Product.COLA);
 		assert vendingMachine.getVendTarget().contains(VendingMachine.Product.COLA);
 	}
+	@Test
+	public void vendingMachineSellsChips(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.order(VendingMachine.Product.CHIPS);
+		assert vendingMachine.getVendTarget().contains(VendingMachine.Product.CHIPS);
+	}
 
 	
 

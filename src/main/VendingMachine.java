@@ -19,7 +19,7 @@ public class VendingMachine {
 		this.vendTarget = vendTarget;
 	}
 	public enum Product{
-		COLA(1.0);
+		COLA(1.0), CHIPS(0.5);
 		private double price;
 		Product(double price){
 			this.price=price;
