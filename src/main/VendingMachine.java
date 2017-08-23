@@ -1,13 +1,18 @@
 package main;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Stack;
 
 public class VendingMachine {
 
 	private Collection<? super Coin> coinReturn;
 	private int balance;
-	private Collection<Coin> depositedCoins;
+	private Collection<Coin> depositedQuarters;
+	private Collection<Coin> depositedNickels;
+	private Collection<Coin> depositedDimes;
+	private Stack<Coin> quarters;
+	private Stack<Coin> nickels;
+	private Stack<Coin> dimes;
 	private Collection<? super Product> vendTarget;
 	private boolean productPurchased;
 	private boolean soldOut;
@@ -34,7 +39,12 @@ public class VendingMachine {
 	}
 	public VendingMachine(){
 		balance=0;
-		depositedCoins=new LinkedList<Coin>();
+		depositedQuarters=new Stack<Coin>();
+		depositedNickels=new Stack<Coin>();
+		depositedDimes=new Stack<Coin>();
+		quarters=new Stack<Coin>();
+		nickels=new Stack<Coin>();
+		dimes=new Stack<Coin>();
 		
 	}
 	/**
@@ -60,15 +70,15 @@ public class VendingMachine {
 	public void insert(Coin coin) {
 		if(coin.getWeightInGrams()==5.67 && coin.getDiameterInMillimeters()==24.26 && coin.getThicknessInMillimeters()==1.75){//detect a Quarter
 			balance+=25;
-			depositedCoins.add(coin);
+			depositedQuarters.add(coin);
 		}
 		else if(coin.getWeightInGrams()==5.0 && coin.getDiameterInMillimeters()==21.21 && coin.getThicknessInMillimeters()==1.95){//detect a nickel
 			balance+=5;
-			depositedCoins.add(coin);
+			depositedNickels.add(coin);
 		}
 		else if(coin.getWeightInGrams()==2.268 && coin.getDiameterInMillimeters()==17.91 && coin.getThicknessInMillimeters()==1.35){//detect a dime
 			balance+=10;
-			depositedCoins.add(coin);
+			depositedDimes.add(coin);
 		}
 		else coinReturn.add(coin);
 		
@@ -95,8 +105,12 @@ public class VendingMachine {
 	 */
 	public void returnCoins() {
 		balance=0;
-		coinReturn.addAll(depositedCoins);
-		depositedCoins.clear();
+		coinReturn.addAll(depositedQuarters);
+		coinReturn.addAll(depositedNickels);
+		coinReturn.addAll(depositedDimes);
+		depositedQuarters.clear();
+		depositedNickels.clear();
+		depositedDimes.clear();
 	}
 	/**
 	 * Order a product.  if sufficient money has been inserted, the product will be vended and any change will be returned.
@@ -109,9 +123,29 @@ public class VendingMachine {
 		}
 		else if (balance>=product.price){
 			vendTarget.add(product);
-			depositedCoins.clear();
+			quarters.addAll(depositedQuarters);
+			dimes.addAll(depositedDimes);
+			nickels.addAll(depositedNickels);
+			depositedQuarters.clear();
+			depositedNickels.clear();
+			depositedDimes.clear();
 			productPurchased=true;
+			makeChange(balance-product.price);
 			balance=0;
+		}
+	}
+	private void makeChange(int amount){
+		while (amount>=25&&!quarters.isEmpty()){
+			amount-=25;
+			coinReturn.add(quarters.pop());
+		}
+		while (amount>=10&&!dimes.isEmpty()){
+			amount-=10;
+			coinReturn.add(dimes.pop());
+		}
+		while (amount>=5&&!nickels.isEmpty()){
+			amount-=5;
+			coinReturn.add(nickels.pop());
 		}
 	}
 	/**
@@ -119,6 +153,31 @@ public class VendingMachine {
 	 */
 	public Collection<? super Product > getVendTarget() {
 		return vendTarget;
+	}
+	
+	/**
+	 * Add Quarters to the Vending Machine
+	 * @param toAdd quarters to add to the machine
+	 */
+	public void addQuarters(Collection<? extends Coin> toAdd){
+		quarters.addAll(toAdd);
+		
+	}
+	/**
+	 * Add dimes to the Vending Machine
+	 * @param toAdd dimes to add to the machine
+	 */
+	public void addDimes(Collection<? extends Coin> toAdd){
+		dimes.addAll(toAdd);
+		
+	}
+	/**
+	 * Add nickels to the Vending Machine
+	 * @param toAdd nickels to add to the machine
+	 */
+	public void addNickels(Collection<? extends Coin> toAdd){
+		nickels.addAll(toAdd);
+		
 	}
 
 }

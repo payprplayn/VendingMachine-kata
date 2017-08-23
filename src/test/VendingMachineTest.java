@@ -16,15 +16,17 @@ import main.VendingMachine.Product;
 public class VendingMachineTest {
 	VendingMachine vendingMachine;
 	private enum CoinType implements Coin{
-		PENNY(2.5,1.55,19.05), QUARTER(5.67,1.75,24.26), NICKEL(5.0,1.95,21.21), DIME(2.268, 1.35, 17.91);
+		PENNY(2.5,1.55,19.05,1), QUARTER(5.67,1.75,24.26,25), NICKEL(5.0,1.95,21.21,5), DIME(2.268, 1.35, 17.91,10);
 		private double diameter;
 		private double thickness;
 		private double weight;
+		private int value;
 
-		CoinType(double weight,double thickness, double diameter){
+		CoinType(double weight,double thickness, double diameter, int value){
 			this.weight=weight;
 			this.thickness=thickness;
 			this.diameter=diameter;
+			this.value=value;
 		}
 		@Override
 		public double getWeightInGrams() {
@@ -170,8 +172,7 @@ public class VendingMachineTest {
 		assertEquals(vendingMachine.readDisplay(),"SOLD OUT");
 	}
 	@Test
-	public void
-	vendingMachineDisplayRetunsToPreviousMessageAfterDisplayingSOLDOUT(){
+	public void vendingMachineDisplayRetunsToPreviousMessageAfterDisplayingSOLDOUT(){
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.DIME);
@@ -182,14 +183,31 @@ public class VendingMachineTest {
 		assertEquals(vendingMachine.readDisplay(),"$0.65");
 	}
 	@Test
-	public void
-	vendingMachineDoesNotDispenseItemIfBalanceIsTooLow(){
+	public void vendingMachineDoesNotDispenseItemIfBalanceIsTooLow(){
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.DIME);
 		vendingMachine.setAmount(Product.CANDY, 0);
 		vendingMachine.order(VendingMachine.Product.CANDY);
 		assert vendingMachine.getVendTarget().isEmpty();
+	}
+	
+	@Test
+	public void vendingMachineReturnsChangeAfterItemIsDispensed(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.insert(CoinType.NICKEL);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.order(VendingMachine.Product.CANDY);
+		assertEquals(25, value(vendingMachine.getCoinReturn()));
+	}
+	private int value(Collection<? super Coin> coinReturn) {
+		int value=0;
+		for(CoinType coin : CoinType.values()){
+			while(coinReturn.remove(coin)) value+=coin.value;
+		}
+		return value;
 	}
 
 	
