@@ -116,6 +116,23 @@ public class VendingMachineTest {
 		vendingMachine.order(VendingMachine.Product.CHIPS);
 		assert vendingMachine.getVendTarget().contains(VendingMachine.Product.CHIPS);
 	}
+	@Test
+	public void vendingMachineSellsCandy(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.order(VendingMachine.Product.CANDY);
+		assert vendingMachine.getVendTarget().contains(VendingMachine.Product.CANDY);
+	}
+	@Test
+	public void vendingMachineKeepsMoneyAfterSale(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.order(VendingMachine.Product.CANDY);
+		vendingMachine.returnCoins();
+		assert vendingMachine.getCoinReturn().isEmpty();
+	}
 
 	
 

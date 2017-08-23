@@ -3,8 +3,6 @@ package main;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import main.VendingMachine.Product;
-
 public class VendingMachine {
 
 	private Collection<? super Coin> coinReturn;
@@ -19,7 +17,7 @@ public class VendingMachine {
 		this.vendTarget = vendTarget;
 	}
 	public enum Product{
-		COLA(1.0), CHIPS(0.5);
+		COLA(1.0), CHIPS(0.5), CANDY(.65);
 		private double price;
 		Product(double price){
 			this.price=price;
@@ -89,7 +87,10 @@ public class VendingMachine {
 	 * @param product the product to order
 	 */
 	public void order(Product product) {
-		if (balance>=product.price)vendTarget.add(product);
+		if (balance>=product.price){
+			vendTarget.add(product);
+			depositedCoins.clear();
+		}
 	}
 	/**
 	 * @return The vend target that was previously set by setVendTarget()
