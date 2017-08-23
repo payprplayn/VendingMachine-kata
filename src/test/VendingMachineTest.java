@@ -78,5 +78,12 @@ public class VendingMachineTest {
 		vendingMachine.insert(CoinTypes.QUARTER);
 		assertEquals("$0.50",vendingMachine.readDisplay());
 	}
+	@Test
+	public void displayedTotalIncreasesBy5WhenNickelIsAccepted(){
+		vendingMachine.insert(CoinTypes.NICKEL);
+		assertEquals("$0.05",vendingMachine.readDisplay());
+		vendingMachine.insert(CoinTypes.NICKEL);
+		assertEquals("$0.10",vendingMachine.readDisplay());
+	}
 
 }
