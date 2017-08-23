@@ -9,6 +9,7 @@ public class VendingMachine {
 	private int balance;
 	private Collection<Coin> depositedCoins;
 	private Collection<? super Product> vendTarget;
+	private boolean productPurchased;
 	/**
 	 * set the vend target for this vending machine.
 	 * @param vendTarget the new vend target. Any future products vended will be placed here (until a new vendTarget is set);
@@ -32,6 +33,9 @@ public class VendingMachine {
 	 * @return the current contents of this VendingMachine's display
 	 */
 	public String readDisplay() {
+		if(productPurchased){
+			return "THANK YOU";
+		}
 		if(balance!=0) return String.format("$%.2f", balance*.01);
 		return "INSERT COIN";
 	}
@@ -90,6 +94,7 @@ public class VendingMachine {
 		if (balance>=product.price){
 			vendTarget.add(product);
 			depositedCoins.clear();
+			productPurchased=true;
 		}
 	}
 	/**

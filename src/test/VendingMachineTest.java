@@ -133,6 +133,14 @@ public class VendingMachineTest {
 		vendingMachine.returnCoins();
 		assert vendingMachine.getCoinReturn().isEmpty();
 	}
+	@Test
+	public void vendingMachineDisplaysTHANKYOUAfterSale(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.order(VendingMachine.Product.CANDY);
+		assertEquals(vendingMachine.readDisplay(),"THANK YOU");
+	}
 
 	
 
