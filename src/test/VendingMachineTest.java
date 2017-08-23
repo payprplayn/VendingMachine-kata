@@ -5,11 +5,13 @@ import static org.junit.Assert.*;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import main.Coin;
 import main.VendingMachine;
+import main.VendingMachine.Product;
 
 public class VendingMachineTest {
 	VendingMachine vendingMachine;
@@ -45,7 +47,10 @@ public class VendingMachineTest {
 		vendingMachine.setCoinReturn(new LinkedList<Coin>());
 		vendingMachine.setVendTarget(new LinkedList<VendingMachine.Product>());
 	}
-
+	@After
+	public void cleanUp(){
+		vendingMachine.setAmount(VendingMachine.Product.CANDY, 10);
+	}
 	@Test
 	public void displayReadsInsertCoinWhenNoCoinsHaveBeenInserted() {
 		assertEquals(vendingMachine.readDisplay(),"INSERT COIN");
@@ -121,6 +126,7 @@ public class VendingMachineTest {
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.insert(CoinType.NICKEL);
 		vendingMachine.order(VendingMachine.Product.CANDY);
 		assert vendingMachine.getVendTarget().contains(VendingMachine.Product.CANDY);
 	}
@@ -129,6 +135,7 @@ public class VendingMachineTest {
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.insert(CoinType.NICKEL);
 		vendingMachine.order(VendingMachine.Product.CANDY);
 		vendingMachine.returnCoins();
 		assert vendingMachine.getCoinReturn().isEmpty();
@@ -138,6 +145,7 @@ public class VendingMachineTest {
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.insert(CoinType.NICKEL);
 		vendingMachine.order(VendingMachine.Product.CANDY);
 		assertEquals(vendingMachine.readDisplay(),"THANK YOU");
 	}
@@ -146,9 +154,32 @@ public class VendingMachineTest {
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.QUARTER);
 		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.insert(CoinType.NICKEL);
 		vendingMachine.order(VendingMachine.Product.CANDY);
 		vendingMachine.readDisplay();
 		assertEquals(vendingMachine.readDisplay(),"INSERT COIN");
+	}
+	@Test
+	public void vendingMachineDisplaysSOLDOUTIfProductIsUnavailable(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.insert(CoinType.NICKEL);
+		vendingMachine.setAmount(Product.CANDY, 0);
+		vendingMachine.order(VendingMachine.Product.CANDY);
+		assertEquals(vendingMachine.readDisplay(),"SOLD OUT");
+	}
+	@Test
+	public void
+	vendingMachineDisplayRetunsToPreviousMessageAfterDisplayingSOLDOUT(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.insert(CoinType.NICKEL);
+		vendingMachine.setAmount(Product.CANDY, 0);
+		vendingMachine.order(VendingMachine.Product.CANDY);
+		vendingMachine.readDisplay();
+		assertEquals(vendingMachine.readDisplay(),"$0.65");
 	}
 
 	

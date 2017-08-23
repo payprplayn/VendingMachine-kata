@@ -10,6 +10,8 @@ public class VendingMachine {
 	private Collection<Coin> depositedCoins;
 	private Collection<? super Product> vendTarget;
 	private boolean productPurchased;
+	private boolean soldOut;
+	private static final int DEFAULT_PRODUCT_AMOUNT=10;
 	/**
 	 * set the vend target for this vending machine.
 	 * @param vendTarget the new vend target. Any future products vended will be placed here (until a new vendTarget is set);
@@ -18,11 +20,17 @@ public class VendingMachine {
 		this.vendTarget = vendTarget;
 	}
 	public enum Product{
-		COLA(1.0), CHIPS(0.5), CANDY(.65);
-		private double price;
-		Product(double price){
+		COLA(100), CHIPS(50), CANDY(65);
+		private final int price;
+		private int amount;
+		Product(int price){
 			this.price=price;
+			this.amount=DEFAULT_PRODUCT_AMOUNT;
 		}
+		
+	}
+	public void setAmount(Product product, int amount){
+		product.amount=amount;
 	}
 	public VendingMachine(){
 		balance=0;
@@ -36,6 +44,10 @@ public class VendingMachine {
 		if(productPurchased){
 			productPurchased=false;
 			return "THANK YOU";
+		}
+		if(soldOut){
+			soldOut=false;
+			return "SOLD OUT";
 		}
 		if(balance!=0) return String.format("$%.2f", balance*.01);
 		return "INSERT COIN";
@@ -92,7 +104,10 @@ public class VendingMachine {
 	 * @param product the product to order
 	 */
 	public void order(Product product) {
-		if (balance>=product.price){
+		if (product.amount==0){
+			soldOut=true;
+		}
+		else if (balance>=product.price){
 			vendTarget.add(product);
 			depositedCoins.clear();
 			productPurchased=true;
