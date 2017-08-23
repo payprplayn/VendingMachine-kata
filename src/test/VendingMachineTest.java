@@ -71,6 +71,12 @@ public class VendingMachineTest {
 		vendingMachine.insert(CoinTypes.DIME);
 		assert(!vendingMachine.getCoinReturn().contains(CoinTypes.DIME));
 	}
-	
+	@Test
+	public void displayedTotalIncreasesBy25WhenQuarterIsAccepted(){
+		vendingMachine.insert(CoinTypes.QUARTER);
+		assertEquals("$0.25",vendingMachine.readDisplay());
+		vendingMachine.insert(CoinTypes.QUARTER);
+		assertEquals("$0.50",vendingMachine.readDisplay());
+	}
 
 }
