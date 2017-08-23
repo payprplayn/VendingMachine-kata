@@ -11,7 +11,8 @@ public class VendingMachine {
 	}
 
 	public void insert(Coin coin) {
-		coinReturn.add(coin);
+		if(coin.getWeightInGrams()==5.67 && coin.getDiameterInMillimeters()==24.26 && coin.getThicknessInMillimeters()==1.75);
+		else coinReturn.add(coin);
 		
 	}
 

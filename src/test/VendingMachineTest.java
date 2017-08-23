@@ -13,7 +13,7 @@ import main.VendingMachine;
 public class VendingMachineTest {
 	VendingMachine vendingMachine;
 	private enum CoinTypes implements Coin{
-		PENNY(2.5,1.55,19.05);
+		PENNY(2.5,1.55,19.05), QUARTER(5.67,1.75,24.26);
 		private double diameter;
 		private double thickness;
 		private double weight;
@@ -53,6 +53,12 @@ public class VendingMachineTest {
 	public void vendingMachineRejectsPennies(){
 		vendingMachine.insert(CoinTypes.PENNY);
 		assert(vendingMachine.getCoinReturn().contains(CoinTypes.PENNY));
+	}
+	
+	@Test
+	public void vendingMachineAcceptsQuarters(){
+		vendingMachine.insert(CoinTypes.QUARTER);
+		assert(!vendingMachine.getCoinReturn().contains(CoinTypes.QUARTER));
 	}
 
 }
