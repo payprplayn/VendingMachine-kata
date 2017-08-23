@@ -181,6 +181,16 @@ public class VendingMachineTest {
 		vendingMachine.readDisplay();
 		assertEquals(vendingMachine.readDisplay(),"$0.65");
 	}
+	@Test
+	public void
+	vendingMachineDoesNotDispenseItemIfBalanceIsTooLow(){
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.QUARTER);
+		vendingMachine.insert(CoinType.DIME);
+		vendingMachine.setAmount(Product.CANDY, 0);
+		vendingMachine.order(VendingMachine.Product.CANDY);
+		assert vendingMachine.getVendTarget().isEmpty();
+	}
 
 	
 
