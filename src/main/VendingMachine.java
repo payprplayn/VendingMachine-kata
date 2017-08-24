@@ -3,6 +3,11 @@ package main;
 import java.util.Collection;
 import java.util.Stack;
 
+/**
+ * model of a vending machine
+ * @author Gabriel Burns
+ *
+ */
 public class VendingMachine {
 
 	private Collection<? super Coin> coinReturn;
@@ -66,7 +71,7 @@ public class VendingMachine {
 	
 	/**
 	 * inert a coin into the VendingMachine
-	 * @param coin
+	 * @param coin the Coin to insert
 	 */
 	public void insert(Coin coin) {
 		if(coin.getWeightInGrams()==5.67 && coin.getDiameterInMillimeters()==24.26 && coin.getThicknessInMillimeters()==1.75){//detect a Quarter
